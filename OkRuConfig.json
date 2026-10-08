@@ -1,0 +1,57 @@
+{
+    "name": "OK.ru",
+    "description": "Buscador y reproductor de OK.ru con autores, canales y series ordenadas por capítulo (usa un Worker propio)",
+    "author": "cheito55",
+    "authorUrl": "https://github.com/cheito55",
+    "sourceUrl": "https://raw.githubusercontent.com/cheito55/Ok.ru-grayjay-plugins/main/OkRuConfig.json",
+    "repositoryUrl": "https://github.com/cheito55/Ok.ru-grayjay-plugins",
+    "scriptUrl": "./OkRuScript.js",
+    "version": 43,
+    "iconUrl": "./ok.png",
+    "id": "62af0e2f-bfd9-489f-afe1-f66583d2f7d0",
+    "scriptSignature": "",
+    "scriptPublicKey": "",
+    "packages": [
+        "Http"
+    ],
+    "allowEval": false,
+    "allowUrls": [
+        "ok.ru",
+        "m.ok.ru",
+        "TU-WORKER.TU-USUARIO.workers.dev"
+    ],
+    "settings": [
+        {
+            "variable": "workerUrl",
+            "name": "URL del Worker",
+            "description": "Ej: https://okru.tu-usuario.workers.dev (sin barra final). Debe coincidir con el dominio de allowUrls.",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "variable": "apiKey",
+            "name": "API key del Worker",
+            "description": "La misma que cargaste como secret API_KEY en el Worker.",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "variable": "okCookie",
+            "name": "Cookie de sesión de OK.ru",
+            "description": "Pegue la cabecera Cookie completa de ok.ru (con JSESSIONID y AUTHCODE). Queda guardada en la app y se envía al Worker en cada consulta.",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "variable": "videoMode",
+            "name": "Extraer las fuentes de video en",
+            "description": "Teléfono: las URLs HLS/MP4 se piden desde tu IP (más seguro para reproducir y castear). Worker: las pide el Worker (úselo solo si comprueba que reproduce).",
+            "type": "Dropdown",
+            "default": "0",
+            "options": [
+                "Teléfono (recomendado)",
+                "Worker"
+            ]
+        }
+    ]
+}
