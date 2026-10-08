@@ -3,10 +3,10 @@
     "description": "Buscador y reproductor de OK.ru con autores, canales y series ordenadas por capítulo (usa un Worker propio)",
     "author": "cheito55",
     "authorUrl": "https://github.com/cheito55",
-    "sourceUrl": "https://raw.githubusercontent.com/cheito55/Ok.ru-grayjay-plugins/main/OkRuConfig.json",
-    "repositoryUrl": "https://github.com/cheito55/Ok.ru-grayjay-plugins",
+    "sourceUrl": "https://raw.githubusercontent.com/cheito55/Ok-worker/main/OkRuConfig.json",
+    "repositoryUrl": "https://github.com/cheito55/Ok-worker",
     "scriptUrl": "./OkRuScript.js",
-    "version": 43,
+    "version": 1,
     "iconUrl": "./ok.png",
     "id": "62af0e2f-bfd9-489f-afe1-f66583d2f7d0",
     "scriptSignature": "",
@@ -18,13 +18,13 @@
     "allowUrls": [
         "ok.ru",
         "m.ok.ru",
-        "TU-WORKER.TU-USUARIO.workers.dev"
+        "https://ok-worker.cheito55.workers.dev"
     ],
     "settings": [
         {
             "variable": "workerUrl",
-            "name": "URL del Worker",
-            "description": "Ej: https://okru.tu-usuario.workers.dev (sin barra final). Debe coincidir con el dominio de allowUrls.",
+            "name": "https://ok-worker.cheito55.workers.dev",
+            "description": "Ej: https://ok-worker.cheito55.workers.dev (sin barra final). Debe coincidir con el dominio de allowUrls.",
             "type": "String",
             "default": ""
         },
