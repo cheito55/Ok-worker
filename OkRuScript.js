@@ -83,7 +83,7 @@ source.getChannelContents = function (url, type, order, filters, continuationTok
     if (continuationToken) body.token = continuationToken;
     var data = workerPost("/channel", body);
     var videos = mapVideos(data.videos);
-    return new ChannelPager(videos, !!data.hasMore && !!data.token, {
+    return new OkRuChannelPager(videos, !!data.hasMore && !!data.token, {
         url: url,
         type: type,
         order: order,
@@ -92,19 +92,19 @@ source.getChannelContents = function (url, type, order, filters, continuationTok
     });
 };
 
-class HomePager extends VideoPager {
+class OkRuHomePager extends VideoPager {
     constructor(results, hasMore, context) { super(results, hasMore, context); }
     nextPage() { return source.getHome(); }
 }
 
-class SearchPager extends VideoPager {
+class OkRuSearchPager extends VideoPager {
     constructor(results, hasMore, context) { super(results, hasMore, context); }
     nextPage() {
         return source.search(this.context.query, this.context.type, this.context.order, this.context.filters, this.context.page);
     }
 }
 
-class ChannelPager extends VideoPager {
+class OkRuChannelPager extends VideoPager {
     constructor(results, hasMore, context) { super(results, hasMore, context); }
     nextPage() {
         return source.getChannelContents(this.context.url, this.context.type, this.context.order, this.context.filters, this.context.token);
