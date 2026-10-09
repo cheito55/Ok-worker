@@ -1,0 +1,37 @@
+{
+  "id": "62af0e2f-bfd9-489f-afe1-f66583d2f7d0",
+  "name": "OK.ru",
+  "description": "Fuente de videos, series y álbumes de OK.ru con soporte de búsqueda, autores, Cast/Chromecast y orden automático de capítulos por temporada.",
+  "author": "GrayJay Community",
+  "authorUrl": "https://ok.ru",
+  "sourceUrl": "https://ok.ru",
+  "scriptUrl": "Script.js",
+  "iconUrl": "https://ok.ru/res/ico/favicon.ico",
+  "version": 43,
+  "minVersion": 1,
+  "allowUrls": [
+    "https://ok.ru/*",
+    "https://*.ok.ru/*",
+    "https://*.okcdn.ru/*",
+    "https://*.mycdn.me/*",
+    "https://*.vk.me/*",
+    "https://*.userapi.com/*"
+  ],
+  "allowAllInternet": false,
+  "settings": [
+    {
+      "id": "prefer_hls",
+      "name": "Priorizar HLS Master",
+      "description": "Ofrecer HLS Master primero para reproducción adaptativa en streaming.",
+      "type": "boolean",
+      "defaultValue": true
+    },
+    {
+      "id": "sort_chapters_default",
+      "name": "Ordenar capítulos por defecto",
+      "description": "En canales de serie / álbumes, ordenar de menor a mayor automáticamente.",
+      "type": "boolean",
+      "defaultValue": true
+    }
+  ]
+}
