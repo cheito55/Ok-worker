@@ -6,35 +6,41 @@
     "sourceUrl": "https://raw.githubusercontent.com/cheito55/Ok-worker/main/OkRuConfig.json",
     "repositoryUrl": "https://github.com/cheito55/Ok-worker",
     "scriptUrl": "./OkRuScript.js",
-    "version": 3,
-    "iconUrl": "./ok.png",
-    "allowNetwork": true,
-    "allowAllHttpHeaderAccess": true,
-    "capabilities": {
-        "search": true,
-        "searchTypes": ["VIDEO"],
-        "videoDetails": true,
-        "channel": true,
-        "channelContents": true
+    "version": 4,
+    "iconUrl": "https://ok.ru/favicon.ico",
+  "id": "a7c4e9a2-6b3d-4f18-9c0a-0d1e2f3a4b5c",
+  "scriptSignature": "",
+  "scriptPublicKey": "",
+  "packages": ["Http"],
+  "allowEval": false,
+  "allowAllHttpHeaderAccess": true,
+  "allowUrls": ["everywhere"],
+  "settings": [
+    {
+      "variable": "workerUrl",
+      "name": "https://ok-worker.cheito55.workers.dev",
+      "description": "Origen del Worker, sin barra final. Ejemplo: https://okru.tu-cuenta.workers.dev",
+      "type": "string",
+      "default": "https://ok-worker.cheito55.workers.dev"
     },
-    "settings": {
-        "workerUrl": {
-            "name": "URL del Worker",
-            "description": "https://ok-worker.cheito55.workers.dev",
-            "type": "TEXT",
-            "default": ""
-        },
-        "apiKey": {
-            "name": "API Key",
-            "description": "Clave secreta configurada en tu Worker para proteger el acceso (opcional).",
-            "type": "TEXT",
-            "default": ""
-        },
-        "okCookie": {
-            "name": "Cookie de OK.ru",
-            "description": "Tu cookie de sesión de OK.ru. Se enviará al Worker en la cabecera X-Ok-Cookie.",
-            "type": "TEXT",
-            "default": ""
-        }
+    {
+      "variable": "apiKey",
+      "name": "API key",
+      "description": "El secret API_KEY del Worker. Se envía en X-Api-Key. Déjalo vacío si el Worker no exige clave.",
+      "type": "string",
+      "default": ""
+    },
+    {
+      "variable": "okCookie",
+      "name": "Cookie de OK.ru",
+      "description": "Cabecera Cookie de una sesión iniciada en ok.ru (JSESSIONID, AUTHCODE, etc.). Se envía en X-Ok-Cookie. Si el Worker ya la lee del KV, puedes dejarlo vacío.",
+      "type": "string",
+      "default": ""
     }
+  ],
+  "changelog": {
+    "1": [
+      "Cliente inicial: búsqueda, ficha de video y canales/series contra el Worker."
+    ]
+  }
 }
