@@ -1,7 +1,7 @@
 /*
- * GrayJay - OK.ru Source v44 (Corregido y Optimizado)
+ * GrayJay - OK.ru Source v45 (Corregido y Optimizado)
  *
- * Correcciones v44:
+ * Correcciones v45:
  *  - FIX CRÃTICO: CorrecciÃ³n de hasMorePagers() -> hasMore / hasMorePages() en Pagers
  *    evitando TypeError fatal al hacer scroll o al ordenar series.
  *  - FIX CAST: ENABLE_SOURCE_HEADERS configurado en false para evitar
@@ -27,7 +27,7 @@ const UA_DESKTOP =
 
 const REGEX_VIDEO_URL = /ok\.ru\/(?:video|videoembed)\/(\d+)/i;
 const SEARCH_URL_BASE =
-    "https://ok.ru/dk?st.cmd=searchResult&st.mode=Movie&st.grmode=Groups&st.query=";
+    "https://ok.ru/video?st.query=";
 
 const MAX_HTML_SIZE = 5000000;
 const MAX_SOURCES = 12;
