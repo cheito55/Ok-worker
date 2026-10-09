@@ -6,52 +6,36 @@
     "sourceUrl": "https://raw.githubusercontent.com/cheito55/Ok-worker/main/OkRuConfig.json",
     "repositoryUrl": "https://github.com/cheito55/Ok-worker",
     "scriptUrl": "./OkRuScript.js",
-    "version": 1,
+    "version": 2,
     "iconUrl": "./ok.png",
     "id": "62af0e2f-bfd9-489f-afe1-f66583d2f7d0",
-    "scriptSignature": "",
-    "scriptPublicKey": "",
-    "packages": [
-        "Http"
-    ],
-    "allowEval": false,
-    "allowUrls": [
-        "ok.ru",
-        "m.ok.ru",
-        "https://ok-worker.cheito55.workers.dev"
-    ],
-    "settings": [
-        {
-            "variable": "workerUrl",
-            "name": "https://ok-worker.cheito55.workers.dev",
-            "description": "Ej: https://ok-worker.cheito55.workers.dev (sin barra final). Debe coincidir con el dominio de allowUrls.",
-            "type": "String",
+    "allowNetwork": true,
+    "allowAllHttpHeaderAccess": true,
+    "capabilities": {
+        "search": true,
+        "searchTypes": ["VIDEO"],
+        "videoDetails": true,
+        "channel": true,
+        "channelContents": true
+    },
+    "settings": {
+        "workerUrl": {
+            "name": "URL del Worker",
+            "description": "https://ok-worker.cheito55.workers.dev",
+            "type": "TEXT",
             "default": ""
         },
-        {
-            "variable": "apiKey",
-            "name": "API key del Worker",
-            "description": "La misma que cargaste como secret API_KEY en el Worker.",
-            "type": "String",
+        "apiKey": {
+            "name": "API Key",
+            "description": "Clave secreta configurada en tu Worker para proteger el acceso (opcional).",
+            "type": "TEXT",
             "default": ""
         },
-        {
-            "variable": "okCookie",
-            "name": "Cookie de sesión de OK.ru",
-            "description": "Pegue la cabecera Cookie completa de ok.ru (con JSESSIONID y AUTHCODE). Queda guardada en la app y se envía al Worker en cada consulta.",
-            "type": "String",
+        "okCookie": {
+            "name": "Cookie de OK.ru",
+            "description": "Tu cookie de sesión de OK.ru. Se enviará al Worker en la cabecera X-Ok-Cookie.",
+            "type": "TEXT",
             "default": ""
-        },
-        {
-            "variable": "videoMode",
-            "name": "Extraer las fuentes de video en",
-            "description": "Teléfono: las URLs HLS/MP4 se piden desde tu IP (más seguro para reproducir y castear). Worker: las pide el Worker (úselo solo si comprueba que reproduce).",
-            "type": "Dropdown",
-            "default": "0",
-            "options": [
-                "Teléfono (recomendado)",
-                "Worker"
-            ]
         }
-    ]
+    }
 }
