@@ -2,15 +2,15 @@
  * GrayJay - OK.ru Source v43 (Corregido y Optimizado)
  *
  * Correcciones v43:
- *  - FIX CRÍTICO: Corrección de hasMorePagers() -> hasMore / hasMorePages() en Pagers
+ *  - FIX CRÃTICO: CorrecciÃ³n de hasMorePagers() -> hasMore / hasMorePages() en Pagers
  *    evitando TypeError fatal al hacer scroll o al ordenar series.
  *  - FIX CAST: ENABLE_SOURCE_HEADERS configurado en false para evitar
  *    fallas de CORS o pantalla 00:00 en Chromecast y reproductores remotos.
- *  - FIX CAPABILITIES: Corrección de ["MIXED"] por tipos válidos de GrayJay (Type.Feed.Videos / ["video"]).
- *  - FIX CAPÍTULOS: Expresiones regulares ampliadas para detectar formatos 1x04, Cap. 01,
- *    Серия, (01), [01] y ordenación estable por temporada.
- *  - FIX BATCH: Protección para entornos donde http.batch() no esté disponible.
- *  - FIX LOGIN: Mensajes claros en caso de muro de autenticación de OK.ru.
+ *  - FIX CAPABILITIES: CorrecciÃ³n de ["MIXED"] por tipos vÃ¡lidos de GrayJay (Type.Feed.Videos / ["video"]).
+ *  - FIX CAPÃTULOS: Expresiones regulares ampliadas para detectar formatos 1x04, Cap. 01,
+ *    Ð¡ÐµÑ€Ð¸Ñ, (01), [01] y ordenaciÃ³n estable por temporada.
+ *  - FIX BATCH: ProtecciÃ³n para entornos donde http.batch() no estÃ© disponible.
+ *  - FIX LOGIN: Mensajes claros en caso de muro de autenticaciÃ³n de OK.ru.
  */
 
 const PLATFORM_NAME = "OK.ru";
@@ -96,7 +96,7 @@ function addDebug(value) {
         let s = safeStr(value);
         if (!s) return;
         if (DEBUG.length >= MAX_DEBUG) DEBUG.shift();
-        DEBUG.push(s.length > 600 ? s.substring(0, 600) + "…" : s);
+        DEBUG.push(s.length > 600 ? s.substring(0, 600) + "â€¦" : s);
     } catch (_) {}
 }
 
@@ -328,12 +328,12 @@ function makeErr(msg) {
     try { return new ScriptException(msg); } catch (_) { return new Error(msg); }
 }
 
-const LOGIN_MSG = "OK.ru requiere inicio de sesión para realizar búsquedas. " +
-    "Por favor, use el icono de llave o menú de usuario en la esquina superior de GrayJay " +
-    "para iniciar sesión en OK.ru con su cuenta.";
+const LOGIN_MSG = "OK.ru requiere inicio de sesiÃ³n para realizar bÃºsquedas. " +
+    "Por favor, use el icono de llave o menÃº de usuario en la esquina superior de GrayJay " +
+    "para iniciar sesiÃ³n en OK.ru con su cuenta.";
 
 function looksLikeLoginWall(html) {
-    return /st\.cmd=anonym|anonymLogin|anonymMain|st\.email|st\.password|field_email|unite a ok|únete a ok|join ok|log in to ok|войти в одноклассники/i
+    return /st\.cmd=anonym|anonymLogin|anonymMain|st\.email|st\.password|field_email|unite a ok|Ãºnete a ok|join ok|log in to ok|Ð²Ð¾Ð¹Ñ‚Ð¸ Ð² Ð¾Ð´Ð½Ð¾ÐºÐ»Ð°ÑÑÐ½Ð¸ÐºÐ¸/i
         .test(safeStr(html));
 }
 
@@ -348,7 +348,7 @@ function httpGetAuthenticated(url) {
     try {
         r = http.GET(url, headers, true);
     } catch (e) {
-        addDebug("search: sesión GrayJay no disponible: " + e);
+        addDebug("search: sesiÃ³n GrayJay no disponible: " + e);
         throw makeErr(LOGIN_MSG);
     }
     return readBody(r);
@@ -569,7 +569,7 @@ function getTitle(meta, fallback, id) {
 
     let fb = cleanText(fallback);
 
-    let wrapped = /see video\s+["«“'](.+?)["»”']/i.exec(v);
+    let wrapped = /see video\s+["Â«â€œ'](.+?)["Â»â€']/i.exec(v);
     if (wrapped) v = cleanText(wrapped[1]);
     if (/see video|on ok\.?\s*video player/i.test(v) && fb && !/see video/i.test(fb)) {
         return fb;
@@ -644,7 +644,7 @@ function xuperResolve(meta) {
     return "";
 }
 
-// Configuración de fuentes y Cast
+// ConfiguraciÃ³n de fuentes y Cast
 const ENABLE_SOURCE_HEADERS = false;
 const PREFER_HLS_FIRST = true;
 
@@ -775,7 +775,7 @@ function buildVideoDetails(meta, pageUrl, fallbackTitle, html) {
             try { ext = extractExternalEmbed(JSON.stringify(meta)); } catch (_) {}
         }
         if (ext) {
-            throw makeErr("Este video está alojado en " + ext.plugin + ":\n" + ext.url);
+            throw makeErr("Este video estÃ¡ alojado en " + ext.plugin + ":\n" + ext.url);
         }
         throw makeErr("OK.ru: este video no expone fuentes reproducibles directas.\n" + debugText());
     }
@@ -843,8 +843,8 @@ function isGenericTitle(t) {
     if (!t || t.length < 2) return true;
     if (/^[\d:\s]+$/.test(t)) return true;
     if (/^(image|video|videos|more|next|previous|menu|play|share|like|comment)$/.test(t)) return true;
-    if (/^(view|views|ver|watch|play|reproducir|mirar|смотреть|посмотреть|просмотр|просмотры|открыть|открыть видео)(?:\s+(video|vídeo|видео|ролик))?$/.test(t)) return true;
-    if (/^(view|views|ver|watch|play|reproducir|mirar|смотреть|посмотреть|просмотр|просмотры|открыть)\s+\d/.test(t) && t.length <= 40) return true;
+    if (/^(view|views|ver|watch|play|reproducir|mirar|ÑÐ¼Ð¾Ñ‚Ñ€ÐµÑ‚ÑŒ|Ð¿Ð¾ÑÐ¼Ð¾Ñ‚Ñ€ÐµÑ‚ÑŒ|Ð¿Ñ€Ð¾ÑÐ¼Ð¾Ñ‚Ñ€|Ð¿Ñ€Ð¾ÑÐ¼Ð¾Ñ‚Ñ€Ñ‹|Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚ÑŒ|Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚ÑŒ Ð²Ð¸Ð´ÐµÐ¾)(?:\s+(video|vÃ­deo|Ð²Ð¸Ð´ÐµÐ¾|Ñ€Ð¾Ð»Ð¸Ðº))?$/.test(t)) return true;
+    if (/^(view|views|ver|watch|play|reproducir|mirar|ÑÐ¼Ð¾Ñ‚Ñ€ÐµÑ‚ÑŒ|Ð¿Ð¾ÑÐ¼Ð¾Ñ‚Ñ€ÐµÑ‚ÑŒ|Ð¿Ñ€Ð¾ÑÐ¼Ð¾Ñ‚Ñ€|Ð¿Ñ€Ð¾ÑÐ¼Ð¾Ñ‚Ñ€Ñ‹|Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚ÑŒ)\s+\d/.test(t) && t.length <= 40) return true;
     return false;
 }
 
@@ -1014,7 +1014,7 @@ function searchOk(query, continuationToken) {
     return new OkSearchPager(out, hasMore, context);
 }
 
-// FIX CRÍTICO: Helper unificado para compatibilidad entre versiones del SDK de GrayJay
+// FIX CRÃTICO: Helper unificado para compatibilidad entre versiones del SDK de GrayJay
 function pagerHasMore(p) {
     if (!p) return false;
     if (typeof p.hasMorePages === "function") return p.hasMorePages();
@@ -1035,7 +1035,7 @@ class OkSearchPager extends VideoPager {
 function doDetails(url) {
     resetDebug();
     let id = extractVideoId(url);
-    if (!id) throw new Error("URL de video de OK.ru no válida");
+    if (!id) throw new Error("URL de video de OK.ru no vÃ¡lida");
 
     try {
         let ua = extractAuthorParams(url);
@@ -1054,10 +1054,10 @@ function doDetails(url) {
 
     let canonical = "https://ok.ru/video/" + id;
     let html = loadOkPage(canonical, id);
-    if (!html) throw new Error("No se pudo cargar la página del video de OK.ru");
+    if (!html) throw new Error("No se pudo cargar la pÃ¡gina del video de OK.ru");
 
     let meta = parseMetadata(html, canonical);
-    if (!meta) throw new Error("No se encontró metadata en el video de OK.ru\n" + debugText());
+    if (!meta) throw new Error("No se encontrÃ³ metadata en el video de OK.ru\n" + debugText());
 
     let fallbackTitle =
         extractTitleParam(url) ||
@@ -1108,8 +1108,8 @@ function extractPageTitle(html) {
     let m = safeStr(html).match(/<title[^>]*>([^<]+)<\/title>/i);
     if (m) {
         let t = cleanText(m[1])
-            .replace(/^(?:see|watch|ver)\s+video\s+["«“'](.+?)["»”']\s+on\s+ok.*$/i, "$1")
-            .replace(/\s*[|\-–]\s*OK\.?RU.*$/i, "")
+            .replace(/^(?:see|watch|ver)\s+video\s+["Â«â€œ'](.+?)["Â»â€']\s+on\s+ok.*$/i, "$1")
+            .replace(/\s*[|\-â€“]\s*OK\.?RU.*$/i, "")
             .replace(/\s+on\s+OK\.?\s*Video Player\s*$/i, "")
             .trim();
         if (t && t.toLowerCase() !== "ok.ru") return t;
@@ -1263,15 +1263,15 @@ function applySeriesByTitle(info, title) {
     return info;
 }
 
-/* ------------------------- Orden por capítulo (Álbumes / Series) ------------------------- */
+/* ------------------------- Orden por capÃ­tulo (Ãlbumes / Series) ------------------------- */
 
-const SORT_CH_ASC  = "Capítulo ↑ (menor a mayor)";
-const SORT_CH_DESC = "Capítulo ↓ (mayor a menor)";
+const SORT_CH_ASC  = "CapÃ­tulo â†‘ (menor a mayor)";
+const SORT_CH_DESC = "CapÃ­tulo â†“ (mayor a menor)";
 const SORT_SITE    = "Orden de OK.ru";
 const CHANNEL_DRAIN_MAX_PAGES = 80;
 const CHANNEL_DRAIN_BUDGET_MS = 90000;
 
-// FIX MEJORADO: Detección robusta de temporada y capítulo para series hispanas y rusas
+// FIX MEJORADO: DetecciÃ³n robusta de temporada y capÃ­tulo para series hispanas y rusas
 function chapterOrderKey(title) {
     let t = cleanText(title);
     let season = 1; // por defecto temporada 1 para series no especificadas
@@ -1280,19 +1280,19 @@ function chapterOrderKey(title) {
     // Temporada: S01, T02, Season 1, 1x04, etc.
     let sm = t.match(/\b(?:S|T)(\d{1,2})\s*(?:[-_ ]?\s*(?:E|Ep|Cap)\s*\d|x\d)/i) ||
              t.match(/\b(\d{1,2})x\d{1,3}\b/i) ||
-             t.match(/(?:temporada|temp\.?|season|сезон)\s*#?\s*(\d{1,2})/i);
+             t.match(/(?:temporada|temp\.?|season|ÑÐµÐ·Ð¾Ð½)\s*#?\s*(\d{1,2})/i);
     if (sm) season = parseInt(sm[1], 10);
 
-    // Capítulo:
-    // 1) Formato estándar 1x04
+    // CapÃ­tulo:
+    // 1) Formato estÃ¡ndar 1x04
     let xMatch = t.match(/\b\d{1,2}x(\d{1,3})\b/i);
     if (xMatch) {
         ch = parseInt(xMatch[1], 10);
     }
 
-    // 2) Prefijos explícitos: Cap, Ep, Episodio, Серия, Выпуск, Parte
+    // 2) Prefijos explÃ­citos: Cap, Ep, Episodio, Ð¡ÐµÑ€Ð¸Ñ, Ð’Ñ‹Ð¿ÑƒÑÐº, Parte
     if (ch === null) {
-        let cm = t.match(/(?:\b(?:cap[ií]tulos?|cap\.?|episodios?|epis\.?|ep\.?|episode|серия|эпизод|выпуск|parte|part|pt\.?))\s*[:#.\-]?\s*(\d{1,4})/i) ||
+        let cm = t.match(/(?:\b(?:cap[iÃ­]tulos?|cap\.?|episodios?|epis\.?|ep\.?|episode|ÑÐµÑ€Ð¸Ñ|ÑÐ¿Ð¸Ð·Ð¾Ð´|Ð²Ñ‹Ð¿ÑƒÑÐº|parte|part|pt\.?))\s*[:#.\-]?\s*(\d{1,4})/i) ||
                  t.match(/\bS\d{1,2}\s*E(\d{1,3})/i) ||
                  t.match(/#\s*(\d{1,4})/);
         if (cm) ch = parseInt(cm[1], 10);
@@ -1304,19 +1304,19 @@ function chapterOrderKey(title) {
         if (fm) ch = parseInt(fm[1], 10);
     }
 
-    // 4) Números entre corchetes o paréntesis: [05], (05)
+    // 4) NÃºmeros entre corchetes o parÃ©ntesis: [05], (05)
     if (ch === null) {
         let bm = t.match(/[\[\(](\d{1,3})[\]\)]/);
         if (bm) ch = parseInt(bm[1], 10);
     }
 
-    // 5) Guion con número al final: "Nombre de serie - 04"
+    // 5) Guion con nÃºmero al final: "Nombre de serie - 04"
     if (ch === null) {
-        let dm = t.match(/(?:^|[-–—:])\s*(\d{1,3})(?:\s*\([\s\S]*\))?\s*$/);
+        let dm = t.match(/(?:^|[-â€“â€”:])\s*(\d{1,3})(?:\s*\([\s\S]*\))?\s*$/);
         if (dm) ch = parseInt(dm[1], 10);
     }
 
-    // 6) Fallback: último número suelto que no parezca año (1900-2099)
+    // 6) Fallback: Ãºltimo nÃºmero suelto que no parezca aÃ±o (1900-2099)
     if (ch === null) {
         let re = /\d+/g, x;
         while ((x = re.exec(t)) !== null) {
@@ -1350,7 +1350,7 @@ function chapterSortMode(order) {
     let o = safeStr(order);
     if (!o) return "asc";
     if (/orden de ok/i.test(o)) return "";
-    if (/mayor a menor|↓|desc/i.test(o)) return "desc";
+    if (/mayor a menor|â†“|desc/i.test(o)) return "desc";
     return "asc";
 }
 
@@ -1375,7 +1375,7 @@ function sortedSeriesPager(url, mode) {
     take(pager);
     let page = 2;
 
-    // FIX CRÍTICO: uso de pagerHasMore(pager) en vez de pager.hasMorePagers()
+    // FIX CRÃTICO: uso de pagerHasMore(pager) en vez de pager.hasMorePagers()
     while (pager && pagerHasMore(pager) && page <= CHANNEL_DRAIN_MAX_PAGES && (nowMs() - t0) < CHANNEL_DRAIN_BUDGET_MS) {
         try { pager = channelPager(u, page); } catch (e) { addDebug("orden: corte en p" + page + ": " + e); break; }
         take(pager);
@@ -1390,7 +1390,7 @@ class OkChannelVideoPager extends VideoPager {
         super(results, hasMore, context);
     }
     nextPage() {
-        // FIX CRÍTICO: pagerHasMore()
+        // FIX CRÃTICO: pagerHasMore()
         if (!pagerHasMore(this)) return this;
         return channelPager(this.context.url, this.context.page);
     }
@@ -1462,7 +1462,7 @@ function channelPageFromToken(token) {
     return 1;
 }
 
-// FIX CRÍTICO: Tipos válidos para ResultCapabilities
+// FIX CRÃTICO: Tipos vÃ¡lidos para ResultCapabilities
 function okChannelTypes() {
     try {
         if (typeof Type !== "undefined" && Type) {
