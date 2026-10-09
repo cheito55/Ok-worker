@@ -1,7 +1,7 @@
 /*
- * GrayJay - OK.ru Source v43 (Corregido y Optimizado)
+ * GrayJay - OK.ru Source v44 (Corregido y Optimizado)
  *
- * Correcciones v43:
+ * Correcciones v44:
  *  - FIX CRÃTICO: CorrecciÃ³n de hasMorePagers() -> hasMore / hasMorePages() en Pagers
  *    evitando TypeError fatal al hacer scroll o al ordenar series.
  *  - FIX CAST: ENABLE_SOURCE_HEADERS configurado en false para evitar
@@ -951,33 +951,78 @@ function makeSearchVideo(r) {
 
     let author = null;
     try { author = makeAuthorLink(r.authorInfo || {}, r.id); } catch (_) {}
+    if (!author) {
+        try {
+            author = new PlatformAuthorLink(
+                new PlatformID(PLATFORM_NAME, "okru", PLUGIN_ID),
+                (r.authorInfo && r.authorInfo.name) || "OK.ru",
+                (r.authorInfo && r.authorInfo.url) || "https://ok.ru",
+                (r.authorInfo && r.authorInfo.thumbnail) || "",
+                0
+            );
+        } catch (_) {}
+    }
 
     try {
+        let cleanId = safeStr(r.id).replace(/^[^:]+:/, "");
         return new PlatformVideo({
-            id: new PlatformID(PLATFORM_NAME, r.id, PLUGIN_ID),
-            name: r.title,
+            id: new PlatformID(PLATFORM_NAME, cleanId || "0", PLUGIN_ID),
+            name: r.title || ("OK.ru Video " + cleanId),
             thumbnails: thumbnails,
             author: author,
             uploadDate: 0,
-            url: withAuthorParams(r.url, r.authorInfo),
+            url: r.url || ("https://ok.ru/video/" + cleanId),
             duration: r.duration || 0,
             viewCount: 0,
             isLive: false
         });
-    } catch (_) {
+    } catch (err) {
         return null;
     }
 }
 
+function hasVideoLinks(html) {
+    return /\/(?:video|videoembed)\/\d+/i.test(safeStr(html)) ||
+           /(?:data-movie-id|data-video-id|data-id)=["']?\d{5,}/i.test(safeStr(html));
+}
+
 function fetchSearchPage(query, page) {
-    let url = SEARCH_URL_BASE + encodeURIComponent(safeStr(query));
-    if (page > 1) url += "&st.page=" + page;
-    let html = httpGetAuthenticated(url);
-    let hasVideos = /\/(?:video|videoembed)\/\d+/i.test(safeStr(html));
-    if (!hasVideos && (page <= 1 || looksLikeLoginWall(html))) {
-        throw makeErr(LOGIN_MSG);
+    let q = encodeURIComponent(safeStr(query));
+    let targets = [
+        "https://m.ok.ru/video/search?st.query=" + q + (page > 1 ? "&st.page=" + page : ""),
+        "https://ok.ru/video/search?search=" + q + (page > 1 ? "&st.page=" + page : ""),
+        "https://ok.ru/dk?st.cmd=searchResult&st.mode=Movie&st.query=" + q + (page > 1 ? "&st.page=" + page : "")
+    ];
+
+    for (let i = 0; i < targets.length; i++) {
+        let targetUrl = targets[i];
+        let html = "";
+        try {
+            html = httpGetAuthenticated(targetUrl);
+        } catch (e) {
+            addDebug("auth search error on " + targetUrl + ": " + e);
+        }
+
+        if (html && hasVideoLinks(html)) {
+            addDebug("BÃºsqueda exitosa con sesiÃ³n en: " + targetUrl);
+            return html;
+        }
+
+        if (!html || !hasVideoLinks(html)) {
+            try {
+                let pubHtml = httpGet(targetUrl);
+                if (pubHtml && hasVideoLinks(pubHtml)) {
+                    addDebug("BÃºsqueda exitosa pÃºblica en: " + targetUrl);
+                    return pubHtml;
+                }
+            } catch (_) {}
+        }
+
+        if (html && looksLikeLoginWall(html)) {
+            throw makeErr(LOGIN_MSG);
+        }
     }
-    return html || "";
+    return "";
 }
 
 function searchOk(query, continuationToken) {
@@ -991,7 +1036,10 @@ function searchOk(query, continuationToken) {
     } catch (_) {}
 
     let html = fetchSearchPage(query, page);
-    if (!html) throw new Error("OK.ru search returned no data");
+    if (!html) {
+        addDebug("searchOk: Sin HTML o sin resultados para: " + query);
+        return new OkSearchPager([], false, { query: safeStr(query), page: page + 1 });
+    }
 
     let found = extractSearchResults(html);
     let raw = [];
@@ -1009,7 +1057,7 @@ function searchOk(query, continuationToken) {
         if (v) out.push(v);
     }
 
-    let hasMore = raw.length > 0;
+    let hasMore = raw.length >= 8;
     let context = { query: safeStr(query), page: page + 1 };
     return new OkSearchPager(out, hasMore, context);
 }
