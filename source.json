@@ -8,7 +8,7 @@
     "repositoryUrl": "https://github.com/cheito55/Ok-worker",
   "scriptUrl": "./Script.js",
   "iconUrl": "https://ok.ru/res/ico/favicon.ico",
-  "version": 43,
+  "version": 45,
   "minVersion": 1,
   "allowUrls": [
     "https://ok.ru/*",
