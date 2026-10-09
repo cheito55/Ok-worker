@@ -4,7 +4,7 @@
     "description": "Buscador y reproductor de OK.ru con autores, canales y series ordenadas por capítulo (usa un Worker propio)",
     "author": "cheito55",
     "authorUrl": "https://github.com/cheito55",
-    "sourceUrl": "https://raw.githubusercontent.com/cheito55/Ok-worker/main/Source.json",
+    "sourceUrl": "https://raw.githubusercontent.com/cheito55/Ok-worker/main/source.json",
     "repositoryUrl": "https://github.com/cheito55/Ok-worker",
   "scriptUrl": "./Script.js",
   "iconUrl": "https://ok.ru/res/ico/favicon.ico",
